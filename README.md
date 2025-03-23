@@ -33,7 +33,7 @@
 ![Sentiment Trend Over Time](results/sentiment_trend_over_time.png)
 
 ## 🚀 프로젝트 디렉토리 구조
-
+```
 Tesla-Stock-Prediction
 ├── data
 │ ├── tesla_news_sentiment.csv
@@ -47,6 +47,7 @@ Tesla-Stock-Prediction
 ├── .gitignore
 ├── README.md
 └── requirements.txt
+```
 
 ## 📉 주요 분석 결과
 
