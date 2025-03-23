@@ -7,12 +7,18 @@
 - 뉴스 데이터를 활용하여 sentiment 분석 (VADER, FinBERT, OpenAI GPT, KR-FinBERT)
 - LSTM 모델을 사용한 주가 예측
 
+![Tesla Stock and Sentiment Trends](results/tesla%20stock%20and%20sentiment%20trends.png)
+
 ## 📊 사용한 데이터
 
 - **테슬라 주가 데이터**: Yahoo Finance (`yfinance`)
 - **테슬라 뉴스 헤드라인 데이터**: 네이버 뉴스 크롤링 데이터
 
 ## ⚙️ 분석 방법 및 모델
+
+### 감성 분석 비교
+
+![Average Sentiment Comparison](results/average_sentiment_comparison.png)
 
 - **감성 분석(Sentiment Analysis)**:
   - VADER: 일반 텍스트 감성 분석
@@ -21,6 +27,10 @@
   - KR-FinBERT: 한국어 금융 뉴스 sentiment 분석
 - **시계열 예측 모델**:
   - LSTM (Long Short-Term Memory)
+
+### 감성 분석 트렌드
+
+![Sentiment Trend Over Time](results/sentiment_trend_over_time.png)
 
 ## 🚀 프로젝트 디렉토리 구조
 
