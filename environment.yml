@@ -1,0 +1,46 @@
+name: stockml
+channels:
+  - pytorch
+  - huggingface
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  # 데이터 처리
+  - numpy>=1.19.0
+  - pandas>=1.2.0
+  - scikit-learn>=0.24.2
+
+  # 딥러닝 프레임워크
+  - tensorflow==2.13.0
+  - keras==2.13.0
+  - tf-keras>=2.6.0
+  - pytorch>=1.7.0
+  - transformers>=4.11.3
+
+  # 부스팅 모델
+  - xgboost>=1.4.2
+
+  # 시각화
+  - matplotlib>=3.3.0
+  - seaborn>=0.11.0
+
+  # 유틸리티
+  - tqdm>=4.50.0
+  - python-dotenv>=0.19.0
+
+  - pip
+  - pip:
+      # 감성 분석
+      - vaderSentiment>=3.3.2
+      - openai
+
+      # 데이터 수집
+      - yfinance
+      - beautifulsoup4>=4.9.0
+      - requests>=2.25.0
+
+      # 유틸리티
+      - emoji>=1.7.0
+      - soynlp>=0.0.493
+      - huggingface-hub>=0.12.0
