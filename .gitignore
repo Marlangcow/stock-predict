@@ -28,10 +28,19 @@ ENV/
 .env.development
 .env.test
 .env.production
+# Conda environment
+/anaconda3/
+/miniconda3/
+*.conda
+environment.yml
+.conda/
+conda-meta/
+conda-bld/
 
 # Jupyter Notebook
 .ipynb_checkpoints
 *.ipynb_checkpoints/
+*.ipynb
 
 # IDE
 .idea/
@@ -42,6 +51,11 @@ ENV/
 # Data
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+*.csv
+*.xlsx
+*.xls
+*.json
+*.xml
 
 # Models
 *.h5
@@ -51,11 +65,15 @@ ENV/
 *.onnx
 *.pb
 model_checkpoints/
+saved_models/
+checkpoints/
 
 # Logs
 *.log
 logs/
 tensorboard_logs/
+wandb/
+mlruns/
 
 # OS generated files
 .DS_Store
@@ -65,3 +83,19 @@ tensorboard_logs/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# API Keys and Secrets
+*api_key*
+*secret*
+credentials.json
+token.json
+
+# Cache
+.cache/
+__pycache__/
+.pytest_cache/
+
+# Selenium
+selenium_page_source.html
+*_page_source.html
+*.html
