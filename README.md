@@ -1,66 +1,104 @@
-# 📌 Tesla Stock Price Prediction with Sentiment Analysis and LSTM
+# 📌 Tesla 주가 예측을 위한 감성 분석 기반 시계열 모델링
 
 ## 🔍 프로젝트 개요
 
-이 프로젝트는 테슬라(Tesla)의 뉴스 데이터를 기반으로 **감성 분석(Sentiment Analysis)**을 진행하고, 이를 활용해 주가 예측을 하는 프로젝트입니다.
+기업 뉴스는 투자자 심리와 주가 변동에 중요한 영향을 미칩니다.  
+본 프로젝트는 뉴스 헤드라인을 기반으로 감성 분석을 수행하고,  
+그 결과를 **LSTM 기반 시계열 예측 모델**과 **XGBoost 회귀 모델**에 적용해  
+**테슬라(TSLA)**의 주가를 예측하는 것을 목표로 합니다.
 
-- 뉴스 데이터를 활용하여 sentiment 분석 (VADER, FinBERT, OpenAI GPT, KR-FinBERT)
-- LSTM 모델을 사용한 주가 예측
+- 감성 분석 도구: **VADER**, **FinBERT**, **OpenAI GPT API**, **KR-FinBERT**
+- 예측 모델: **LSTM (딥러닝 시계열 모델)** vs **XGBoost (트리 기반 회귀 모델)**
 
-![Tesla Stock and Sentiment Trends](results/tesla%20stock%20and%20sentiment%20trends.png)
+---
 
-## 📊 사용한 데이터
+## 📊 데이터 설명
 
-- **테슬라 주가 데이터**: Yahoo Finance (`yfinance`)
-- **테슬라 뉴스 헤드라인 데이터**: 네이버 뉴스 크롤링 데이터
+### 📄 뉴스 데이터
+- 출처: **네이버 뉴스 크롤링 (국내 매체)**
+- 기간: 2025년 2~3월
+- 수집량: 약 **900건**
+- 전처리:
+  - 중복 제거, HTML/특수문자 제거, 날짜 정제
+  - 감성 점수 통일 (-1: 부정, 0: 중립, 1: 긍정)
+  - 날짜 기준으로 **평균 감성 점수 집계**
 
-## ⚙️ 분석 방법 및 모델
+### 📈 주가 데이터
+- 출처: **Yahoo Finance** (`yfinance`)
+- 종목: **TSLA**
+- 기간: 2024년 12월 ~ 2025년 3월
+- 주요 컬럼: Open, High, Low, Close, Volume
+- 추가 지표:
+  - 이동평균선: MA(10/50)
+  - 모멘텀 지표: MACD
+  - 변동성 지표: Volatility, 볼린저 밴드
+  - 거래량 로그 변환: Volume_log
+- 전처리:
+  - 결측값 제거, MinMaxScaler 정규화
+  - 뉴스 감성 점수와 날짜 기준 병합
 
-### 감성 분석 비교
+---
 
-![Average Sentiment Comparison](results/average_sentiment_comparison.png)
+## 🧠 분석 및 모델링
 
-- **감성 분석(Sentiment Analysis)**:
-  - VADER: 일반 텍스트 감성 분석
-  - FinBERT: 금융 뉴스 특화 감성 분석
-  - OpenAI GPT: 금융 전문가 시각에서의 sentiment 평가
-  - KR-FinBERT: 한국어 금융 뉴스 sentiment 분석
-- **시계열 예측 모델**:
-  - LSTM (Long Short-Term Memory)
+### 🔍 감성 분석 비교
 
-### 감성 분석 트렌드
+![Sentiment Trend](results/tesla_stock_and_sentiment_trends.png)
 
-![Sentiment Trend Over Time](results/sentiment_trend_over_time.png)
+- **OpenAI 감성 점수**가 주가 흐름과 가장 유사한 패턴
+- **VADER/FinBERT**는 2분류 기준이라 민감도 낮음
+- **KR-FinBERT**는 한국어 기반 → 영어 뉴스에선 한계 존재
 
-## 🚀 프로젝트 디렉토리 구조
+---
+
+### 📈 모델 성능 비교
+
+| 모델       | 입력 데이터        | MAE   | RMSE  | R²    | 해석 |
+|------------|--------------------|--------|--------|--------|-------|
+| **XGBoost** | 기술 지표 + 감성 점수 | 1.97 | 2.35 | 0.69 | 감성 점수 포함 시 성능 저하, Close 의존도 과대 |
+| **LSTM**    | 시계열 입력 + 감성 점수 | 5.08 | 6.99 | 0.87 | 감성 점수 반영 시 우수한 예측 성능 |
+
+📊 시각화:
+
+![Model Comparison](results/model_comparison_xgb_lstm.png)
+
+---
+
+## 🔎 핵심 인사이트
+
+- 감성 점수는 **XGBoost보다 LSTM**에서 효과적
+- **OpenAI 감성 점수**가 가장 예측력 있음
+- 뉴스 흐름은 **방향성 예측에 강점** → 투자 보조지표로 활용 가능
+- 실전 적용 시 **API/알림 시스템, B2B SaaS**로 확장 가능
+
+---
+
+## 📁 프로젝트 구조
+
 ```
 Tesla-Stock-Prediction
-├── data
-│ ├── tesla_news_sentiment.csv
-│ └── tesla_stock.csv
-├── notebooks
-│ └── Tesla_Stock_Prediction.ipynb
-├── results
-│ └── average_sentiment_comparison.png
-│ └── sentiment_trend_over_time.png
-│ └── tesla stock and sentiment trends.png
+├── data                     # 원본 뉴스 및 주가 데이터
+│   ├── tesla_news_sentiment.csv
+│   └── tesla_stock.csv
+├── notebooks                # 분석 노트북
+│   └── Tesla_Stock_Prediction.ipynb
+├── results                  # 시각화 결과 이미지
+│   ├── average_sentiment_comparison.png
+│   ├── sentiment_trend_over_time.png
+│   ├── tesla_stock_and_sentiment_trends.png
+│   └── model_comparison_xgb_lstm.png
 ├── .gitignore
 ├── README.md
 └── requirements.txt
 ```
 
-## 📉 주요 분석 결과
+---
 
-- **뉴스 sentiment와 테슬라 주가 간의 유의미한 상관관계**를 확인했습니다.
-- OpenAI의 감성 분석 결과가 테슬라의 주가 움직임과 가장 밀접하게 관련되어 있었습니다.
-- LSTM 모델을 통해 sentiment 데이터를 활용한 주가 예측 모델을 구현했습니다.
-
-## 💻 코드 실행 방법
+## 💻 실행 방법
 
 ```bash
-# 필요한 라이브러리 설치
+# 1. 의존성 설치
 pip install -r requirements.txt
 
-# 주피터 노트북 실행
+# 2. 주피터 노트북 실행
 jupyter notebook notebooks/Tesla_Stock_Prediction.ipynb
-```
